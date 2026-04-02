@@ -11,42 +11,56 @@ let LIB   = 'all';   // active library filter
 let COLL  = null;    // active collection id
 let _SH   = '';      // cached search results HTML
 
+// Detect current page from URL
+function _detectPage() {
+  const path = window.location.pathname;
+  const params = new URLSearchParams(window.location.search);
+  
+  if (path.includes('libraries.html')) {
+    PAGE = 'libraries';
+  } else if (path.includes('collections.html')) {
+    PAGE = 'collections';
+  } else if (path.includes('collection.html')) {
+    PAGE = 'coll';
+    COLL = params.get('id');
+  } else if (path.includes('lists.html')) {
+    PAGE = 'lists';
+  } else {
+    PAGE = 'home';
+    // Check for library filter
+    const libParam = params.get('lib');
+    if (libParam) {
+      LIB = libParam;
+    }
+  }
+}
+
 
 // ── NAV HELPERS ───────────────────────────────────────────────
 
 /** Navigate to a named page (home | libraries | collections | lists). */
 function gp(p) {
-  PAGE = p;
-  COLL = null;
-  if (p === 'home') LIB = 'all';
-
-  _setActiveNav(p);
-  renderSidebar();
-  renderContent();
-
-  document.getElementById('q').value = '';
+  if (p === 'home') window.location.href = 'index.html';
+  else if (p === 'libraries') window.location.href = 'libraries.html';
+  else if (p === 'collections') window.location.href = 'collections.html';
+  else if (p === 'lists') window.location.href = 'lists.html';
 }
 
 /** Filter the home page by a library id. */
 function gl(id) {
-  PAGE = 'home';
-  COLL = null;
-  LIB  = id;
-
-  _setActiveNav('home');
-  renderSidebar();
-  renderContent();
+  // If we're not on home page, go to home page with filter
+  if (PAGE !== 'home') {
+    window.location.href = `index.html?lib=${encodeURIComponent(id)}`;
+  } else {
+    LIB = id;
+    renderSidebar();
+    renderContent();
+  }
 }
 
 /** Open a collection detail view. */
 function gc(id) {
-  PAGE = 'coll';
-  COLL = id;
-
-  // No nav tab is "active" when inside a collection
-  _setActiveNav(null);
-  renderSidebar();
-  renderContent();
+  window.location.href = `collection.html?id=${encodeURIComponent(id)}`;
 }
 
 /** Highlight the correct top-nav button. */
@@ -62,14 +76,17 @@ function _setActiveNav(page) {
 
 function renderSidebar() {
   const totalEntries = Object.keys(COLLS).length;
+  const sb = document.getElementById('sb');
+  if (!sb) return;
+  
   let h = '';
 
   // Library filter buttons
   h += '<span class="sbl">Libraries</span>';
   h += _sidebarBtn(
-    "gl('all')",
+    `gl('all')`,
     '📁', 'All Libraries', totalEntries,
-    LIB === 'all' && !['libraries', 'collections', 'lists'].includes(PAGE)
+    LIB === 'all' && PAGE === 'home'
   );
 
   LIBS.forEach(lib => {
@@ -85,18 +102,26 @@ function renderSidebar() {
 
   // Browse links
   h += '<span class="sbl">Browse</span>';
-  h += _sidebarBtn("gp('libraries')",   '', 'All Libraries',   '', PAGE === 'libraries');
-  h += _sidebarBtn("gp('collections')", '', 'All Collections', '', PAGE === 'collections');
-  h += _sidebarBtn("gp('lists')",       '', 'User Lists',      '', PAGE === 'lists');
+  h += _sidebarBtn(`gp('libraries')`,   '', 'All Libraries',   '', PAGE === 'libraries');
+  h += _sidebarBtn(`gp('collections')`, '', 'All Collections', '', PAGE === 'collections');
+  h += _sidebarBtn(`gp('lists')`,       '', 'User Lists',      '', PAGE === 'lists');
 
-  document.getElementById('sb').innerHTML = h;
+  sb.innerHTML = h;
+  
+  // Add click event listeners
+  sb.querySelectorAll('.sbi').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const action = this.getAttribute('data-action');
+      if (action) eval(action);
+    });
+  });
 }
 
 /** Build one sidebar button element string. */
 function _sidebarBtn(onclick, ico, label, count, active) {
   const countBadge = count !== '' ? `<span class="sbn">${count}</span>` : '';
-  const icoSpan    = ico ? `${ico} ` : '';
-  return `<button class="sbi${active ? ' on' : ''}" onclick="${onclick}">
+  const icoSpan    = ico ? `<span class="sbi-ico">${ico}</span>` : '';
+  return `<button class="sbi${active ? ' on' : ''}" data-action="${onclick.replace(/"/g, '&quot;')}">
     <span class="sbd"></span>${icoSpan}${label}${countBadge}
   </button>`;
 }
@@ -163,18 +188,28 @@ function renderHome() {
     colls.forEach(({ id, c }) => {
       const previewTags = c.sites.slice(0, 3).map(s => `<span class="tag">${s.n}</span>`).join('');
       const moreBadge   = c.sites.length > 3 ? `<span class="tag">+${c.sites.length - 3}</span>` : '';
+      
+      // Extract image src from c.ico HTML
+      const imgMatch = c.ico.match(/src="([^"]+)"/);
+      const imgSrc = imgMatch ? imgMatch[1] : '';
 
       h += `
         <a class="cc" onclick="gc('${id}')">
-          <div class="cc-h">
-            <div class="cc-ico">${c.ico}</div>
-            <div>
-              <div class="cc-n">${c.name}</div>
-              <div class="cc-c">${c.sites.length} entries</div>
-            </div>
+          <div class="cc-img-wrap">
+            <img class="cc-img" src="${imgSrc}" alt="${c.name}" onerror="this.style.display='none'">
+            <div class="cc-overlay"></div>
           </div>
-          <div class="cc-d">${c.desc}</div>
-          <div class="tags">${previewTags}${moreBadge}</div>
+          <div class="cc-body">
+            <div class="cc-h">
+              <div class="cc-ico">${c.ico}</div>
+              <div>
+                <div class="cc-n">${c.name}</div>
+                <div class="cc-c">${c.sites.length} entries</div>
+              </div>
+            </div>
+            <div class="cc-d">${c.desc}</div>
+            <div class="tags">${previewTags}${moreBadge}</div>
+          </div>
         </a>`;
     });
 
@@ -233,17 +268,27 @@ function renderAllCollections() {
     <div class="cg">`;
 
   Object.entries(COLLS).forEach(([id, c]) => {
+    // Extract image src from c.ico HTML
+    const imgMatch = c.ico.match(/src="([^"]+)"/);
+    const imgSrc = imgMatch ? imgMatch[1] : '';
+
     h += `
       <a class="cc" onclick="gc('${id}')">
-        <div class="cc-h">
-          <div class="cc-ico">${c.ico}</div>
-          <div>
-            <div class="cc-n">${c.name}</div>
-            <div class="cc-c">${c.sites.length} entries · ${c.lib}</div>
-          </div>
+        <div class="cc-img-wrap">
+          <img class="cc-img" src="${imgSrc}" alt="${c.name}" onerror="this.style.display='none'">
+          <div class="cc-overlay"></div>
         </div>
-        <div class="cc-d">${c.desc}</div>
-        <div class="tags"><span class="tag p">${c.lib}</span></div>
+        <div class="cc-body">
+          <div class="cc-h">
+            <div class="cc-ico">${c.ico}</div>
+            <div>
+              <div class="cc-n">${c.name}</div>
+              <div class="cc-c">${c.sites.length} entries · ${c.lib}</div>
+            </div>
+          </div>
+          <div class="cc-d">${c.desc}</div>
+          <div class="tags"><span class="tag p">${c.lib}</span></div>
+        </div>
       </a>`;
   });
 
@@ -264,10 +309,11 @@ function renderCollection(id) {
   }
 
   const lib = LIBS.find(l => l.name === c.lib) ?? LIBS[0];
+  const libPage = `libraries.html`;
 
   let h = buildBreadcrumb([
     ['Home',      "gp('home')"],
-    ['Libraries', "gp('libraries')"],
+    ['Libraries', libPage],
     [c.lib,       `gl('${lib.id}')`],
   ]);
 
@@ -447,18 +493,27 @@ function doSearch(query) {
 // ── BREADCRUMB HELPER ─────────────────────────────────────────
 
 /**
- * @param {Array<[string, string]>} crumbs  — [[label, onclickFn], …]
+ * @param {Array<[string, string]>} crumbs  — [[label, onclickFnOrHref], …]
  * @returns {string} HTML string
  */
 function buildBreadcrumb(crumbs) {
-  const parts = crumbs.map(([label, fn]) =>
-    `<button class="bcl" onclick="${fn}">${label}</button>`
-  );
+  const parts = crumbs.map(([label, action]) => {
+    // Check if it's a page navigation (gp('...'))
+    if (action.startsWith("gp('")) {
+      const page = action.match(/gp\('([^']+)'\)/)[1];
+      const href = page === 'home' ? 'index.html' : `${page}.html`;
+      return `<button class="bcl" onclick="window.location.href='${href}'">${label}</button>`;
+    }
+    // Otherwise use onclick directly
+    return `<button class="bcl" onclick="${action}">${label}</button>`;
+  });
   return `<div class="bc">${parts.join('<span class="bc-sep">›</span>')}</div>`;
 }
 
 
 // ── INIT ──────────────────────────────────────────────────────
 
+_detectPage();
+_setActiveNav(PAGE === 'coll' ? null : PAGE);
 renderSidebar();
 renderContent();

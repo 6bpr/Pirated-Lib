@@ -287,7 +287,7 @@ const COLLS = {
 
   'wn': {
     name: 'Web Novels',
-    ico: '<img src="images/novel/web-novel.png" alt="web novel" style="width: 24px; height: 24px;">',
+    ico: '<img src="images/novel/web-novels.png" alt="web novel" style="width: 24px; height: 24px;">',
     lib: 'Novels',
     desc: 'Web novels — original fiction posted online by authors directly, unrefined web posts.',
     sites: [
@@ -301,7 +301,7 @@ const COLLS = {
 
   'vn': {
     name: 'Visual Novels',
-    ico: '<img src="images/novel/visual-novel.png" alt="visual novel" style="width: 24px; height: 24px;">',
+    ico: '<img src="images/novel/visual-novels.png" alt="visual novel" style="width: 24px; height: 24px;">',
     lib: 'Novels',
     desc: 'Visual novels (games) — interactive fiction combining text with graphics and player choices.',
     sites: [
@@ -352,7 +352,7 @@ const COLLS = {
 
   'img-tools': {
     name: 'Image Tools',
-    ico: '<img src="images/tools/image-tools.png" alt="image tools" style="width: 24px; height: 24px;">',
+    ico: '<img src="images/tools/wallpapers.png" alt="image tools" style="width: 24px; height: 24px;">',
     lib: 'Tools',
     desc: 'Free tools for image compression, editing, upscaling, and OCR useful for manga and fanart workflows.',
     sites: [
