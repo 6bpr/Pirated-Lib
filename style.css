@@ -1,4 +1,4 @@
-/* ── RESET & ROOT ────────────────────────────────────────── */
+/* RESET & ROOT */
 
 *,
 *::before,
@@ -72,7 +72,7 @@ body {
 }
 
 
-/* ── TOP NAV ─────────────────────────────────────────────── */
+/* TOP NAV  */
 
 #nav {
   height: var(--nh);
@@ -167,7 +167,7 @@ body {
 }
 
 
-/* ── SEARCH BAR ──────────────────────────────────────────── */
+/* SEARCH BAR */
 
 #sbar {
   height: var(--sh);
@@ -216,7 +216,7 @@ body {
 }
 
 
-/* ── MAIN LAYOUT ─────────────────────────────────────────── */
+/* MAIN LAYOUT */
 
 #app {
   display: flex;
@@ -239,7 +239,7 @@ body {
 }
 
 
-/* ── SIDEBAR ─────────────────────────────────────────────── */
+/*  SIDEBAR */
 
 .sbl {
   display: block;
@@ -322,7 +322,7 @@ body {
 }
 
 
-/* ── BREADCRUMB ──────────────────────────────────────────── */
+/* BREADCRUMB  */
 
 .bc {
   display: flex;
@@ -353,7 +353,7 @@ body {
 }
 
 
-/* ── HERO BANNER ─────────────────────────────────────────── */
+/* HERO BANNER */
 
 .hero {
   background: var(--bg2);
@@ -414,7 +414,7 @@ body {
 }
 
 
-/* ── SECTION HEADING ─────────────────────────────────────── */
+/* SECTION HEADING */
 
 .sh {
   display: flex;
@@ -452,7 +452,7 @@ body {
 }
 
 
-/* ── COLLECTION GRID ─────────────────────────────────────── */
+/* COLLECTION GRID */
 
 .cg {
   display: grid;
@@ -537,7 +537,7 @@ body {
 }
 
 
-/* ── TAGS ────────────────────────────────────────────────── */
+/* TAGS */
 
 .tags {
   display: flex;
@@ -562,7 +562,7 @@ body {
 .tag.y { background: var(--ywd); color: var(--yw);  border-color: #2a2000; }
 
 
-/* ── LIBRARIES GRID ──────────────────────────────────────── */
+/* LIBRARIES GRID */
 
 .lg {
   display: grid;
@@ -635,7 +635,7 @@ body {
 }
 
 
-/* ── SITES TABLE ─────────────────────────────────────────── */
+/* SITES TABLE */
 
 .st {
   background: var(--bg2);
@@ -745,7 +745,7 @@ body {
 }
 
 
-/* ── EMPTY STATE ─────────────────────────────────────────── */
+/* EMPTY STATE */
 
 .empty {
   background: var(--bg2);
@@ -773,7 +773,7 @@ body {
 }
 
 
-/* ── SCROLLBAR ───────────────────────────────────────────── */
+/* SCROLLBAR */
 
 ::-webkit-scrollbar              { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track        { background: var(--bg0); }
@@ -781,7 +781,7 @@ body {
 ::-webkit-scrollbar-thumb:hover  { background: var(--b3); }
 
 
-/* ── RESPONSIVE ────────────────────────────────────────────── */
+/* RESPONSIVE */
 
 @media (max-width: 768px) {
   /* Base font size */
