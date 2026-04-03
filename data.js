@@ -1,6 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-//  data.js  —  Library definitions and all collection/site data
-// ─────────────────────────────────────────────────────────────
 
 const LIBS = [
   {
@@ -41,7 +38,7 @@ const LIBS = [
 ];
 
 
-// ─── COLLECTIONS ─────────────────────────────────────────────
+// ─── COLLECTIONS 
 // Each entry shape:
 //   n    — display name
 //   u    — URL
@@ -52,7 +49,7 @@ const LIBS = [
 
 const COLLS = {
 
-  // ── ANIME ──────────────────────────────────────────────────
+  // ── ANIME 
 
   'en-stream': {
     name: 'English Streaming Sites',
@@ -171,7 +168,7 @@ const COLLS = {
   },
 
 
-  // ── MANGA ──────────────────────────────────────────────────
+  // ── MANGA 
 
   'manga-agg': {
     name: 'Manga Aggregators',
@@ -223,7 +220,7 @@ const COLLS = {
   },
 
 
-  // ── HENTAI ─────────────────────────────────────────────────
+  // ── HENTAI 
 
   'h-stream': {
     name: 'Hentai Streaming',
@@ -266,7 +263,7 @@ const COLLS = {
   },
 
 
-  // ── NOVELS ─────────────────────────────────────────────────
+  // ── NOVELS 
 
   'ln': {
     name: 'Light Novels',
@@ -315,7 +312,7 @@ const COLLS = {
   },
 
 
-  // ── TOOLS ──────────────────────────────────────────────────
+  // ── TOOLS 
 
   'vpn': {
     name: 'VPN Services',

@@ -1,17 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-//  app.js  —  State, routing, sidebar, and page renderers
-//  Depends on: data.js (LIBS, COLLS)
-// ─────────────────────────────────────────────────────────────
-
-
-// ── SITE HEALTH CHECK ─────────────────────────────────────────
-//
-// Strategy: optimistic UI + async background checks
-// 1. Page renders instantly with manual status from data.js
-// 2. A "Checking…" state is shown immediately (or cached result if fresh)
-// 3. All site probes run in parallel via Promise.allSettled
-// 4. Results update cells in-place — no reflow, no flicker
-// 5. Results cached in localStorage for 30 min
 
 const HEALTH_KEY = 'pirated-lib-health';
 const HEALTH_TTL = 30 * 60 * 1000; // 30 min
@@ -47,8 +33,8 @@ function _setStatus(url, key) {
 }
 
 /**
- * Probe a single URL. Returns 'online' on success, 'down' on failure.
- * Uses no-cors fetch — can only detect if the server responds at all.
+ Probe a single URL. Returns 'online' on success, 'down' on failure.
+ Uses no-cors fetch — can only detect if the server responds at all.
  */
 async function _probe(url, { timeoutMs = 5000 } = {}) {
   const controller = new AbortController();
@@ -65,11 +51,11 @@ async function _probe(url, { timeoutMs = 5000 } = {}) {
 }
 
 /**
- * Run health checks for every site in a collection.
- * - Instantly shows "Checking…" (or cached result if < TTL)
- * - Probes all sites in parallel
- * - Updates cells in-place when results arrive
- * - Caches results for next visit
+ Run health checks for every site in a collection.
+ Instantly shows "Checking…" (or cached result if < TTL)
+ Probes all sites in parallel
+ Updates cells in-place when results arrive
+ Caches results for next visit
  */
 function runHealth(collectionId) {
   const c = COLLS[collectionId];
@@ -136,7 +122,7 @@ function _detectPage() {
 }
 
 
-// ── NAV HELPERS ───────────────────────────────────────────────
+// ── NAV HELPERS 
 
 /** Navigate to a named page (home | libraries | collections | lists). */
 function gp(p) {
@@ -172,7 +158,7 @@ function _setActiveNav(page) {
 }
 
 
-// ── SIDEBAR ───────────────────────────────────────────────────
+// ── SIDEBAR 
 
 function renderSidebar() {
   const totalEntries = Object.keys(COLLS).length;
@@ -227,7 +213,7 @@ function _sidebarBtn(onclick, ico, label, count, active) {
 }
 
 
-// ── CONTENT ROUTER ────────────────────────────────────────────
+// ── CONTENT ROUTER 
 
 function renderContent() {
   const ct = document.getElementById('ct');
@@ -246,7 +232,7 @@ function renderContent() {
 }
 
 
-// ── HOME ──────────────────────────────────────────────────────
+// ── HOME 
 
 function renderHome() {
   const filteredLibs = LIB === 'all' ? LIBS : LIBS.filter(l => l.id === LIB);
@@ -312,7 +298,7 @@ function renderHome() {
 }
 
 
-// ── LIBRARIES ────────────────────────────────────────────────
+// ── LIBRARIES 
 
 function renderLibraries() {
   let h = buildBreadcrumb([['Home', "gp('home')"]]);
@@ -345,7 +331,7 @@ function renderLibraries() {
 }
 
 
-// ── ALL COLLECTIONS ───────────────────────────────────────────
+// ── ALL COLLECTIONS 
 
 function renderAllCollections() {
   let h = buildBreadcrumb([['Home', "gp('home')"]]);
@@ -381,7 +367,7 @@ function renderAllCollections() {
 }
 
 
-// ── COLLECTION DETAIL ─────────────────────────────────────────
+// ── COLLECTION DETAIL 
 
 function renderCollection(id) {
   const c = COLLS[id];
@@ -456,7 +442,7 @@ function renderCollection(id) {
 }
 
 
-// ── USER LISTS ────────────────────────────────────────────────
+// ── USER LISTS 
 
 function renderLists() {
   return buildBreadcrumb([['Home', "gp('home')"]]) + `
@@ -474,7 +460,7 @@ function renderLists() {
 }
 
 
-// ── SEARCH ────────────────────────────────────────────────────
+// ── SEARCH 
 
 function doSearch(query) {
   if (!query.trim()) {
@@ -577,7 +563,7 @@ function doSearch(query) {
 }
 
 
-// ── BREADCRUMB HELPER ─────────────────────────────────────────
+// ── BREADCRUMB HELPER 
 
 /**
  * @param {Array<[string, string]>} crumbs  — [[label, onclickFnOrHref], …]
@@ -598,7 +584,7 @@ function buildBreadcrumb(crumbs) {
 }
 
 
-// ── INIT ──────────────────────────────────────────────────────
+// ── INIT 
 
 _detectPage();
 _setActiveNav(PAGE === 'coll' ? null : PAGE);
