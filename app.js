@@ -1,4 +1,10 @@
 
+if (typeof CSS !== 'undefined' && typeof CSS.escape !== 'function') {
+  CSS.escape = function(val) {
+    return String(val).replace(/["'\\]/g, '\\$&');
+  };
+}
+
 const HEALTH_KEY = 'pirated-lib-health';
 const HEALTH_TTL = 30 * 60 * 1000; // 30 min
 
