@@ -302,7 +302,7 @@ function renderHome() {
     <div class="hero">
       <div class="hero-ico"> <img src="images/Pink rodamrix.jpeg" alt="Pink rodamrix" width="50" height="50" /> </div>
       <div>
-        <div class="hero-title">6bpr</div>
+        <div class="hero-title">Pirated-Lib</div>
         <div class="hero-desc">
           A curated index listing and comparing all types of websites, applications,
           and services for consuming Japanese media. Browse by library, collection,
