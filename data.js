@@ -117,6 +117,9 @@ const COLLS = {
     ],
   },
 
+
+
+ 
   'android': {
     name: 'Android Apps',
     ico: '<img src="images/anime/android-app.gif" alt="android app" style="width: 24px; height: 24px;">',
@@ -182,7 +185,7 @@ const COLLS = {
       { n: 'Bato.to',     u: 'https://bato.to',                        note: 'Not the original — same owner as MangaPark', d: 'Large aggregator with community uploads. Wide catalog.',                                                  s: 'g', t: ['Free', 'Community'] },
       { n: 'MangaPark',   u: 'https://mangapark.net',                  note: '',                                          d: 'Large aggregator. Shows multiple source versions per title.',                                               s: 'g', t: ['Free', 'Multi-source'] },
       { n: 'MangaSee',    u: 'https://mangasee123.com',                note: '',                                          d: 'Licensed manga from official sources. Clean reader experience.',                                            s: 'g', t: ['Free', 'Licensed'] },
-      { n: 'MangaKakalot',u: 'https://mangakakalot.com',               note: '',                                          d: 'Large catalog. Readable interface. Some ads.',                                                              s: 'g', t: ['Free', 'Ads'] },
+      { n: 'MangaKakalot',u: 'https://mangakakalot.gg',               note: '',                                          d: 'Large catalog. Readable interface. Some ads.',                                                              s: 'g', t: ['Free', 'Ads'] },
       { n: 'ComicK',      u: 'https://comick.io',                      note: '',                                          d: 'Modern manga reader with tracking integration and chapter comments.',                                       s: 'g', t: ['Free', 'Tracking'] },
       { n: 'Cubari',      u: 'https://cubari.moe',                     note: '',                                          d: 'Easy to use web app to read manga and comics. Proxy reader for various sources including imgur albums.',    s: 'g', t: ['Free', 'Proxy'] },
       { n: 'MangaReader', u: 'https://mangareader.to',                 note: '',                                          d: 'Broad manga catalog with a clean modern reader.',                                                          s: 'g', t: ['Free'] },
