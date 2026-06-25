@@ -1,57 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pirated-Lib - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Piralib — Curated Anime Resource Directory</title>
+  <meta name="description" content="A curated index of the best anime resources on the internet. Hand-picked streaming sites, download sources, tools, and more.">
+  <meta name="theme-color" content="#0d1117">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Brass+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="%BASE_URL%favicon_io/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="%BASE_URL%favicon_io/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon_io/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%favicon_io/apple-touch-icon.png">
+  <meta property="og:title" content="Piralib — Curated Anime Resource Directory">
+  <meta property="og:description" content="A curated index of the best anime resources on the internet.">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
-
-  <!-- TOP NAV -->
-  <nav id="nav">
-    <span class="logo" onclick="window.location.href='index.html'">
-      Pirated-Lib
-      <span class="logo-tag">beta</span>
-    </span>
-    <div class="nav-div"></div>
-    <div class="nav-ls">
-      <button class="nb on" id="nb-home">Home</button>
-      <button class="nb" id="nb-libraries" onclick="window.location.href='libraries.html'">Libraries</button>
-      <button class="nb" id="nb-collections" onclick="window.location.href='collections.html'">Collections</button>
-      <button class="nb" id="nb-lists" onclick="window.location.href='lists.html'">Lists</button>
-    </div>
-    <div class="nav-sp"></div>
-    <button class="nav-srch" onclick="document.getElementById('q').focus()">
-      ⌕&nbsp; Search
-    </button>
-  </nav>
-
-  <!-- SEARCH BAR -->
-  <div id="sbar">
-    <div class="sw">
-      <span class="si">⌕</span>
-      <input
-        id="q"
-        type="text"
-        placeholder="Search libraries, collections, sites…"
-        oninput="doSearch(this.value)"
-      >
-    </div>
-  </div>
-
-  <!-- MAIN LAYOUT -->
-  <div id="app">
-    <aside id="sb"></aside>
-    <main id="ct"></main>
-  </div>
-
-  <!-- SCRIPTS -->
-  <script src="data.js"></script>
-  <script src="app.js"></script>
-
+  <div id="navbar-slot"></div>
+  <div id="app-slot"></div>
+  <div id="bottomnav-slot"></div>
 </body>
 </html>

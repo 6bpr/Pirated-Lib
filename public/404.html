@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piralib — Curated Anime Resource Directory</title>
+  <meta name="description" content="A curated index of the best anime resources on the internet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <script>
+    (function() {
+      var base = '/Pirated-Lib';
+      var path = window.location.pathname;
+      if (path.startsWith(base)) {
+        path = path.slice(base.length) || '/';
+      }
+      sessionStorage.setItem('redirect', path + window.location.search);
+      window.location.replace(base + '/');
+    })();
+  </script>
+</head>
+<body>
+    <p>Redirecting to Piralib…</p>
+</body>
+</html>

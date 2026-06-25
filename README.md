@@ -1,128 +1,98 @@
-# Pirated Lib
+# AniLib
 
-> A curated index of websites, apps, and services for consuming Japanese media.
+A curated index of the best anime resources on the internet.
 
-<p align="center">
-  🎬 Anime &nbsp;·&nbsp; 📚 Manga &nbsp;·&nbsp; 📖 Novels &nbsp;·&nbsp; 🔞 Hentai &nbsp;·&nbsp; 🛠️ Tools
-</p>
+**AniLib** is a premium curated anime discovery platform — an archive and discovery hub for the best anime resources on the web. Every site is hand-picked, reviewed, and maintained by enthusiasts.
 
-<p align="center">
-  Browse · Compare · Discover
-</p>
+## Features
 
----
+- **134+ curated sites** across 5 categories (Anime, Manga, Novels, Hentai, Tools)
+- **Instant fuzzy search** powered by Fuse.js (Ctrl+K to open)
+- **Advanced filtering** by category, subcategory, tags, status
+- **Multiple view modes**: grid, list, compact
+- **Favorites** — save sites to your personal list (localStorage)
+- **Browsing history** — recently visited sites with timestamps (localStorage)
+- **Personal notes** — private annotations per site (localStorage)
+- **Site health monitoring** — client-side status checking with cached results
+- **Similar site recommendations** based on tag overlap
+- **Statistics dashboard** with health breakdown, category distribution, tag cloud
+- **Dark & light mode** with persistent preference
+- **Keyboard-first navigation** with command palette search
+- **Mobile-first responsive design** with bottom tab navigation
+- **Zero ads, zero trackers, zero backend**
 
-## ✨ Features
+## Tech Stack
 
-- **🗂️ Library-based browsing** — Organized into Anime, Manga, Novels, Hentai, and Tools
-- **📦 Curated collections** — Every entry is done by hand, not scraped
-- **🔍 Full-text search** — Search across sites, collections, tags, and descriptions
-- **📊 Status tracking** — Know if a site is Online, Partial, or Down
-- **🏷️ Rich tagging** — Filter by Free, No Ads, FOSS, Legal, and more
-- **🌐 Multi-language** — Covers English and foreign-language sites
-- **📱 Responsive** — Works on desktop and mobile
-- **🌙 Dark theme** — Easy on the eyes
+- [Vite](https://vitejs.dev/) — Build tool
+- [TypeScript](https://www.typescriptlang.org/) — Type safety
+- [Fuse.js](https://fusejs.io/) — Client-side fuzzy search
+- Vanilla CSS — No framework, no Tailwind
+- JSON — All data in static files
+- localStorage — User preferences and personal data
+- GitHub Pages — Hosting
 
----
+## Getting Started
 
-## 🚀 Quick Start
-
-This is a **static site** — no build step, no dependencies, no server required.
-
-Clone the repo:
 ```bash
-git clone https://github.com/6bpr/pirated-lib.git
-cd pirated-lib
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Type check
+npm run typecheck
 ```
 
-Open in browser:
+## Project Structure
+
+```
+anilib/
+├── index.html              # Entry point
+├── public/
+│   ├── 404.html            # SPA fallback for GitHub Pages
+│   ├── data/               # Static JSON data
+│   │   ├── sites.json
+│   │   └── categories.json
+│   └── images/             # Site screenshots and icons
+├── src/
+│   ├── types/              # TypeScript interfaces
+│   ├── utils/              # Utilities (router, search, storage, etc.)
+│   ├── components/         # UI components
+│   │   ├── ui/             # Primitives (StatusDot, Tag, Badge, Breadcrumbs)
+│   │   ├── layout/         # Layout (Navbar, Sidebar, Footer, FilterBar)
+│   │   ├── site/           # Site-specific (SiteCard, SiteListItem, SiteDetail)
+│   │   ├── search/         # Search overlay
+│   │   └── stats/          # Stats components
+│   ├── pages/              # Page renderers (Home, Browse, SiteDetail, etc.)
+│   ├── styles/             # CSS (tokens, reset, layout, components, pages)
+│   └── main.ts             # Entry point
+├── scripts/
+│   └── migrate-data.js     # Data migration tool
+├── data.js                 # Legacy data file
+├── app.js                  # Legacy app file
+├── style.css               # Legacy styles
+└── README.md
+```
+
+## Adding Sites
+
+All site data lives in `public/data/sites.json`. Categories in `public/data/categories.json`.
+Simply edit the JSON files and rebuild.
+
+## Deployment
+
 ```bash
-xdg-open index.html
+npm run build
+# Deploy dist/ to GitHub Pages
 ```
 
-Or deploy to **GitHub Pages**, **Netlify**, **Vercel**, or any static host — just drop the files and go.
-
----
-
-## 📁 Project Structure
-
-```
-├── index.html          ← Home page
-├── libraries.html      ← All libraries overview
-├── collections.html    ← All collections grid
-├── collection.html     ← Collection detail view
-├── lists.html          ← User lists (coming soon)
-├── style.css           ← All styles (dark theme, responsive)
-├── app.js              ← Router, sidebar, page renderers
-├── data.js             ← Library & collection data
-└── images/             ← Icons and assets
-```
-
----
-
-## 📝 Adding Content
-
-All data lives in `data.js`. The structure is straightforward:
-
-```js
-const LIBS = [
-  {
-    id: 'anime',
-    ico: '<img src="images/icon.png" style="width: 24px; height: 24px;">',
-    name: 'Anime',
-    desc: 'A style of Japanese film and television animation.',
-    colls: ['en-stream', 'licensed'],
-  },
-];
-
-const COLLS = {
-  'en-stream': {
-    name: 'English Streaming Sites',
-    ico: '<img src="images/anime/icon.png" style="width: 24px; height: 24px;">',
-    lib: 'Anime',
-    desc: 'Free and pirate anime streaming sites.',
-    sites: [
-      {
-        n: 'Site Name',
-        u: 'https://example.com',
-        note: 'Optional caveat',
-        d: 'Short description.',
-        s: 'g',           // g=online, y=partial, r=down
-        t: ['Free', 'No Ads'],
-      },
-    ],
-  },
-};
-```
-
----
-
-## 🎨 Design Philosophy
-
-Minimal. Functional. Dark. No frameworks, no build tools, no bloat.
-
-Built with vanilla HTML, CSS, and JavaScript. Loads fast, works everywhere, respects your bandwidth and your attention.
-
----
-
-## 🤝 Contributing
-
-Got a site to add? Want to improve the UI?
-
-1. Fork the repo
-2. Make your changes
-3. Open a PR
-
-All contributions are welcome — especially new entries, and corrections.
-
----
-
-## 📄 License
+## License
 
 MIT
-
----
-
-<p align="center">
-  Made with 💜 and zero frameworks
-</p>

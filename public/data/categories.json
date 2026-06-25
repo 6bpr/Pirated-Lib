@@ -1,0 +1,370 @@
+[
+  {
+    "id": "anime",
+    "name": "Anime",
+    "description": "Websites and services for watching, downloading, and tracking anime.",
+    "icon": "star",
+    "subcategories": [
+      {
+        "id": "anime-stream",
+        "name": "Streaming Sites"
+      },
+      {
+        "id": "anime-scraper",
+        "name": "Scrapers & Self-Hosted"
+      },
+      {
+        "id": "anime-donghua",
+        "name": "Donghua"
+      },
+      {
+        "id": "anime-download",
+        "name": "Downloads & Torrents"
+      },
+      {
+        "id": "anime-ott",
+        "name": "Legal OTT Services"
+      },
+      {
+        "id": "anime-yt",
+        "name": "YouTube Channels"
+      }
+    ]
+  },
+  {
+    "id": "manga",
+    "name": "Manga",
+    "description": "Read, download, and purchase manga, manhwa, and manhua.",
+    "icon": "bookmark",
+    "subcategories": [
+      {
+        "id": "manga-online",
+        "name": "Online Readers"
+      },
+      {
+        "id": "manga-manhwa",
+        "name": "Manhwa & Manhua"
+      },
+      {
+        "id": "manga-download",
+        "name": "Downloads"
+      },
+      {
+        "id": "manga-legal",
+        "name": "Legal Services"
+      }
+    ]
+  },
+  {
+    "id": "novels",
+    "name": "Novels",
+    "description": "Light novels, web novels, and visual novels.",
+    "icon": "bookmark",
+    "subcategories": [
+      {
+        "id": "novel-online",
+        "name": "Online Reading"
+      },
+      {
+        "id": "novel-download",
+        "name": "Downloads"
+      },
+      {
+        "id": "novel-legal",
+        "name": "Legal Services"
+      }
+    ]
+  },
+  {
+    "id": "tokusatsu",
+    "name": "Tokusatsu",
+    "description": "Japanese live-action superhero shows like Kamen Rider, Ultraman, and Super Sentai.",
+    "icon": "star",
+    "subcategories": [
+      {
+        "id": "toku-stream",
+        "name": "Streaming"
+      },
+      {
+        "id": "toku-download",
+        "name": "Downloads"
+      },
+      {
+        "id": "toku-wiki",
+        "name": "Wikis & Portals"
+      }
+    ]
+  },
+  {
+    "id": "comics",
+    "name": "Comics",
+    "description": "Western comics, reading guides, and download sources.",
+    "icon": "bookmark",
+    "subcategories": [
+      {
+        "id": "comics-online",
+        "name": "Online Reading"
+      },
+      {
+        "id": "comics-download",
+        "name": "Downloads"
+      },
+      {
+        "id": "comics-guide",
+        "name": "Reading Guides"
+      },
+      {
+        "id": "comics-legal",
+        "name": "Legal Services"
+      }
+    ]
+  },
+  {
+    "id": "software",
+    "name": "Software",
+    "description": "Apps for watching anime, reading manga, and tracking your collection.",
+    "icon": "grid3x3",
+    "subcategories": [
+      {
+        "id": "soft-android",
+        "name": "Android Apps"
+      },
+      {
+        "id": "soft-ios",
+        "name": "iOS Apps"
+      },
+      {
+        "id": "soft-pc",
+        "name": "PC Apps"
+      },
+      {
+        "id": "soft-server",
+        "name": "Server Software"
+      },
+      {
+        "id": "soft-downloader",
+        "name": "Downloaders"
+      }
+    ]
+  },
+  {
+    "id": "music",
+    "name": "Music",
+    "description": "Stream, download, and discover Japanese music including anime songs, doujin, and vocaloid.",
+    "icon": "heart",
+    "subcategories": [
+      {
+        "id": "music-stream",
+        "name": "Streaming"
+      },
+      {
+        "id": "music-legal",
+        "name": "Legal Services"
+      },
+      {
+        "id": "music-download",
+        "name": "Downloads"
+      },
+      {
+        "id": "music-radio",
+        "name": "Radio"
+      },
+      {
+        "id": "music-phone",
+        "name": "Phone Apps"
+      },
+      {
+        "id": "music-pc",
+        "name": "PC Software"
+      }
+    ]
+  },
+  {
+    "id": "tools",
+    "name": "Tools",
+    "description": "Download managers, media players, image tools, and general utilities.",
+    "icon": "search",
+    "subcategories": [
+      {
+        "id": "tools-downloader",
+        "name": "Download Managers"
+      },
+      {
+        "id": "tools-media",
+        "name": "Media Players"
+      },
+      {
+        "id": "tools-image",
+        "name": "Image Tools"
+      },
+      {
+        "id": "tools-video",
+        "name": "Video Tools"
+      },
+      {
+        "id": "tools-arr",
+        "name": "Arr Stack"
+      },
+      {
+        "id": "tools-usenet",
+        "name": "Usenet"
+      },
+      {
+        "id": "tools-general",
+        "name": "General Utilities"
+      },
+      {
+        "id": "tools-ext",
+        "name": "Browser Extensions"
+      },
+      {
+        "id": "tools-scripts",
+        "name": "Userscripts"
+      }
+    ]
+  },
+  {
+    "id": "misc",
+    "name": "Misc Sites",
+    "description": "Databases, calendars, portals, utilities, and other resources.",
+    "icon": "search",
+    "subcategories": [
+      {
+        "id": "misc-database",
+        "name": "Databases"
+      },
+      {
+        "id": "misc-calendar",
+        "name": "Calendars"
+      },
+      {
+        "id": "misc-portal",
+        "name": "Portals & News"
+      },
+      {
+        "id": "misc-utility",
+        "name": "Utilities"
+      },
+      {
+        "id": "misc-4chan",
+        "name": "4chan Archives"
+      },
+      {
+        "id": "misc-encoding",
+        "name": "Encoding & Fansubbing"
+      },
+      {
+        "id": "misc-quiz",
+        "name": "Quizzes & Games"
+      }
+    ]
+  },
+  {
+    "id": "art",
+    "name": "Art",
+    "description": "Art platforms, boorus, official art archives, and commissioning.",
+    "icon": "heart",
+    "subcategories": [
+      {
+        "id": "art-platform",
+        "name": "Platforms"
+      },
+      {
+        "id": "art-booru",
+        "name": "Boorus"
+      },
+      {
+        "id": "art-frontend",
+        "name": "Frontends"
+      },
+      {
+        "id": "art-official",
+        "name": "Official Art"
+      },
+      {
+        "id": "art-commission",
+        "name": "Commission & Support"
+      },
+      {
+        "id": "art-software",
+        "name": "Software"
+      }
+    ]
+  },
+  {
+    "id": "games",
+    "name": "Games",
+    "description": "Game databases, tools, and community resources.",
+    "icon": "grid3x3",
+    "subcategories": [
+      {
+        "id": "games-database",
+        "name": "Databases"
+      },
+      {
+        "id": "games-tools",
+        "name": "Tools"
+      },
+      {
+        "id": "games-gacha",
+        "name": "Gacha Games"
+      },
+      {
+        "id": "games-osu",
+        "name": "osu!"
+      },
+      {
+        "id": "games-pokemon",
+        "name": "Pokemon"
+      },
+      {
+        "id": "games-sonic",
+        "name": "Sonic"
+      },
+      {
+        "id": "games-touhou",
+        "name": "Touhou"
+      },
+      {
+        "id": "games-yugioh",
+        "name": "Yu-Gi-Oh!"
+      }
+    ]
+  },
+  {
+    "id": "nsfw",
+    "name": "NSFW",
+    "description": "Adult anime, manga, illustrations, and related software.",
+    "icon": "star",
+    "subcategories": [
+      {
+        "id": "nsfw-anime",
+        "name": "Anime"
+      },
+      {
+        "id": "nsfw-manga",
+        "name": "Manga & Doujinshi"
+      },
+      {
+        "id": "nsfw-pornhwa",
+        "name": "Pornhwa"
+      },
+      {
+        "id": "nsfw-illust",
+        "name": "Illustrations"
+      },
+      {
+        "id": "nsfw-software",
+        "name": "Software"
+      },
+      {
+        "id": "nsfw-games",
+        "name": "Games"
+      },
+      {
+        "id": "nsfw-av",
+        "name": "AV"
+      }
+    ]
+  }
+]

@@ -1,0 +1,80 @@
+import { el } from '../utils/dom'
+import { icon, icons } from '../utils/icons'
+import { SiteCard } from '../components/site/SiteCard'
+import { StatCard } from '../components/stats/StatCard'
+import { pluralize } from '../utils/format'
+import { navigate, basePath } from '../utils/router'
+import type { Site, Category } from '../types'
+
+export function HomePage(sites: Site[], categories: Category[], favIds: string[]): HTMLElement {
+  const page = el('div', {})
+
+  const hero = el('div', { class: 'hero-minimal animate-fade-in' })
+  const heroTitle = el('div', { class: 'hero-title' }, 'Piralib')
+  hero.appendChild(heroTitle)
+  hero.appendChild(el('p', {}, 'A curated index of the best anime resources on the internet.'))
+  const meta = el('div', { class: 'hero-meta' })
+  meta.appendChild(el('span', {}, `${pluralize(sites.length, 'site')}`))
+  meta.appendChild(el('span', {}, `${pluralize(categories.length, 'category')}`))
+  hero.appendChild(meta)
+  page.appendChild(hero)
+
+  const catSection = el('div', { class: 'home-categories animate-fade-in-up' })
+  const catTitle = el('h2', { class: 'section-title', style: 'margin-bottom:var(--space-3);text-align:center;' })
+  catTitle.innerHTML = `${icon('grid3x3', 18)} Browse by Category`
+  catSection.appendChild(catTitle)
+
+  const catGrid = el('div', { class: 'category-grid' })
+  const catIcons: Record<string, keyof typeof icons> = {
+    anime: 'star',
+    manga: 'bookmark',
+    novels: 'bookmark',
+    tokusatsu: 'star',
+    comics: 'bookmark',
+    software: 'grid3x3',
+    music: 'heart',
+    tools: 'search',
+    misc: 'search',
+    art: 'heart',
+    games: 'grid3x3',
+    nsfw: 'star',
+  }
+  categories.forEach(cat => {
+    const count = sites.filter(s => s.category === cat.id).length
+    const iconName = catIcons[cat.id] || 'chevronRight'
+    const card = el('div', { class: 'category-card' })
+    card.innerHTML = `
+      <div class="category-card-icon">${icon(iconName, 22)}</div>
+      <div class="category-card-name">${cat.name}</div>
+      <div class="category-card-count">${pluralize(count, 'site')}</div>
+      <div class="category-card-desc">${cat.description}</div>
+    `
+    card.addEventListener('click', () => navigate(`/browse?category=${cat.id}`))
+    catGrid.appendChild(card)
+  })
+  catSection.appendChild(catGrid)
+  page.appendChild(catSection)
+
+  const recent = [...sites].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 6)
+  if (recent.length > 0) {
+    const recentSection = el('div', { class: 'home-recent animate-fade-in-up' })
+    const recentTitle = el('h2', { class: 'section-title', style: 'margin-bottom:var(--space-3);' })
+    recentTitle.innerHTML = `${icon('clock', 18)} Recent Additions & Updates`
+    recentSection.appendChild(recentTitle)
+    const grid = el('div', { class: 'site-grid' })
+    recent.forEach(s => grid.appendChild(SiteCard(s, favIds.includes(s.id))))
+    recentSection.appendChild(grid)
+    page.appendChild(recentSection)
+  }
+
+  const statsRow = el('div', { class: 'stats-grid', style: 'margin-bottom:var(--space-6)' })
+  const onlineCount = sites.filter(s => s.status === 'online').length
+  const partialCount = sites.filter(s => s.status === 'partial').length
+  const downCount = sites.filter(s => s.status === 'down').length
+  statsRow.appendChild(StatCard(onlineCount, 'Sites Online'))
+  statsRow.appendChild(StatCard(partialCount, 'Sites Partial'))
+  statsRow.appendChild(StatCard(downCount, 'Sites Down'))
+  page.appendChild(statsRow)
+
+  return page
+}

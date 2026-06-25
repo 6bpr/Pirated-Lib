@@ -1,0 +1,100 @@
+/* ─── HOME ─── */
+
+.home-categories {
+  margin-bottom: var(--space-6);
+}
+
+.home-recent {
+  margin-bottom: var(--space-6);
+}
+
+/* ─── BROWSE ─── */
+
+.browse-header {
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+.browse-controls {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.browse-search-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-tertiary);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  outline: none;
+  font-family: var(--font-body);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+  margin-bottom: var(--space-3);
+}
+.browse-search-input:focus {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+  background: var(--bg-elevated);
+}
+.browse-search-input::placeholder { color: var(--text-muted); }
+
+.browse-count {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+  text-align: center;
+}
+
+/* ─── FAVORITES ─── */
+
+.favorites-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ─── HISTORY ─── */
+
+.history-group {
+  margin-bottom: var(--space-4);
+}
+.history-group-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: var(--space-2);
+  text-align: center;
+}
+
+/* ─── DASHBOARD ─── */
+
+.dashboard-section {
+  margin-bottom: var(--space-6);
+}
+.dashboard-section-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+  text-align: center;
+}
+
+/* ─── ABOUT ─── */
+
+.about-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+.about-content h2 {
+  text-align: center;
+}
