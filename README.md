@@ -1,12 +1,12 @@
-# AniLib
+# Piralib
 
 A curated index of the best anime resources on the internet.
 
-**AniLib** is a premium curated anime discovery platform — an archive and discovery hub for the best anime resources on the web. Every site is hand-picked, reviewed, and maintained by enthusiasts.
+**Piralib** is a premium curated anime discovery platform — an archive and discovery hub for the best anime resources on the web. Every site is hand-picked, reviewed, and maintained by enthusiasts.
 
 ## Features
 
-- **134+ curated sites** across 5 categories (Anime, Manga, Novels, Hentai, Tools)
+- **550+ curated sites** across 5 categories (Anime, Manga, Novels, Hentai, Tools)
 - **Instant fuzzy search** powered by Fuse.js (Ctrl+K to open)
 - **Advanced filtering** by category, subcategory, tags, status
 - **Multiple view modes**: grid, list, compact
@@ -14,12 +14,9 @@ A curated index of the best anime resources on the internet.
 - **Browsing history** — recently visited sites with timestamps (localStorage)
 - **Personal notes** — private annotations per site (localStorage)
 - **Site health monitoring** — client-side status checking with cached results
-- **Similar site recommendations** based on tag overlap
 - **Statistics dashboard** with health breakdown, category distribution, tag cloud
 - **Dark & light mode** with persistent preference
 - **Keyboard-first navigation** with command palette search
-- **Mobile-first responsive design** with bottom tab navigation
-- **Zero ads, zero trackers, zero backend**
 
 ## Tech Stack
 
@@ -93,6 +90,3 @@ npm run build
 # Deploy dist/ to GitHub Pages
 ```
 
-## License
-
-MIT
