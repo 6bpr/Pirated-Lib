@@ -65,16 +65,11 @@ export function BrowsePage(
   if (filters.subcategory) {
     filtered = filtered.filter(s => s.subcategory === filters.subcategory)
   }
-  if (filters.status !== 'all') {
-    filtered = filtered.filter(s => s.status === filters.status)
-  }
-
   switch (filters.sort) {
     case 'name-asc': filtered.sort((a, b) => a.name.localeCompare(b.name)); break
     case 'name-desc': filtered.sort((a, b) => b.name.localeCompare(a.name)); break
     case 'added': filtered.sort((a, b) => b.addedAt.localeCompare(a.addedAt)); break
     case 'updated': filtered.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)); break
-    case 'status': filtered.sort((a, b) => a.status.localeCompare(b.status)); break
   }
 
   const countEl = el('div', { class: 'browse-count' }, `Showing ${pluralize(filtered.length, 'site')}`)

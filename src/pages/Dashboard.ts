@@ -18,40 +18,13 @@ export function DashboardPage(sites: Site[], categories: Category[], recentIds?:
   pageTitle.innerHTML = `${icon('barChart3', 24)} Dashboard`
   page.appendChild(pageTitle)
 
-  const online = sites.filter(s => s.status === 'online').length
-  const offline = sites.filter(s => s.status === 'offline').length
   const uniqueTags = new Set(sites.flatMap(s => s.tags)).size
-  const totalPct = sites.length > 0 ? Math.round((online / sites.length) * 100) : 0
 
   const stats = el('div', { class: 'stats-grid' })
   stats.appendChild(StatCard(sites.length, 'Total Sites'))
   stats.appendChild(StatCard(categories.length, 'Categories'))
   stats.appendChild(StatCard(uniqueTags, 'Unique Tags'))
-  stats.appendChild(StatCard(`${totalPct}%`, 'Sites Online'))
   page.appendChild(stats)
-
-  const healthSection = el('div', { class: 'dashboard-section' })
-  healthSection.appendChild(el('h2', { class: 'dashboard-section-title' }, 'Health Overview'))
-  const healthChart = el('div', { class: 'bar-chart' })
-  const maxHealth = Math.max(online, offline, 1)
-  const healthData = [
-    { label: 'Online', count: online, color: 'var(--success)' },
-    { label: 'Offline', count: offline, color: 'var(--danger)' },
-  ]
-  healthData.forEach(d => {
-    const row = el('div', { class: 'bar-row' })
-    const label = el('span', { class: 'bar-label' })
-    label.innerHTML = `${icon('circle', 10)} ${d.label}`
-    row.appendChild(label)
-    const track = el('div', { class: 'bar-track' })
-    const fill = el('div', { class: 'bar-fill', style: `width:${(d.count / maxHealth) * 100}%;background:${d.color};` })
-    track.appendChild(fill)
-    row.appendChild(track)
-    row.appendChild(el('span', { class: 'bar-value' }, String(d.count)))
-    healthChart.appendChild(row)
-  })
-  healthSection.appendChild(healthChart)
-  page.appendChild(healthSection)
 
   const catSection = el('div', { class: 'dashboard-section' })
   catSection.appendChild(el('h2', { class: 'dashboard-section-title' }, 'Sites per Category'))

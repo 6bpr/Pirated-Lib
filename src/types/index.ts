@@ -7,15 +7,12 @@ export interface Site {
   category: string
   subcategory: string
   tags: string[]
-  status: SiteStatus
   language: string
   requires: string
   curatorNote: string
   addedAt: string
   updatedAt: string
 }
-
-export type SiteStatus = 'online' | 'offline'
 
 export interface Category {
   id: string
@@ -48,12 +45,11 @@ export interface FilterState {
   category: string | null
   subcategory: string | null
   tags: string[]
-  status: SiteStatus | 'all'
   sort: SortOption
   query: string
 }
 
-export type SortOption = 'name-asc' | 'name-desc' | 'added' | 'updated' | 'status'
+export type SortOption = 'name-asc' | 'name-desc' | 'added' | 'updated'
 
 export interface HistoryEntry {
   siteId: string

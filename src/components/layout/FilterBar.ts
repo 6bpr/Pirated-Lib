@@ -1,6 +1,6 @@
 import { el } from '../../utils/dom'
 import { icon } from '../../utils/icons'
-import type { FilterState, SortOption, SiteStatus, Category } from '../../types'
+import type { FilterState, SortOption, Category } from '../../types'
 
 export function FilterBar(
   filters: FilterState,
@@ -37,7 +37,6 @@ export function FilterBar(
     { value: 'name-desc', label: 'Name ↓' },
     { value: 'added', label: 'Recently Added' },
     { value: 'updated', label: 'Recently Updated' },
-    { value: 'status', label: 'Status' },
   ]
   sortOptions.forEach(opt => {
     const option = el('option', { value: opt.value }, opt.label) as HTMLOptionElement
@@ -48,13 +47,6 @@ export function FilterBar(
     onFilterChange({ ...filters, sort: sortSelect.value as SortOption })
   })
   bar.appendChild(sortSelect)
-
-  if (filters.status !== 'all') {
-    const pill = el('span', { class: 'filter-pill active' })
-    pill.innerHTML = `${statusLabel(filters.status)} ${icon('x')}`
-    pill.addEventListener('click', () => onFilterChange({ ...filters, status: 'all' }))
-    bar.appendChild(pill)
-  }
 
   if (filters.subcategory) {
     const subName = subcatMap.get(filters.subcategory) || filters.subcategory
@@ -70,9 +62,4 @@ export function FilterBar(
   }
 
   return bar
-}
-
-function statusLabel(s: SiteStatus | 'all'): string {
-  const map: Record<string, string> = { all: 'All', online: 'Online', offline: 'Offline' }
-  return map[s] || s
 }

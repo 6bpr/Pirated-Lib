@@ -1,4 +1,4 @@
-import type { AppState, FilterState, HistoryEntry, SortOption, SiteStatus, Site } from '../types'
+import type { AppState, FilterState, HistoryEntry, SortOption, Site } from '../types'
 
 const PREFIX = 'piralib-'
 
@@ -21,7 +21,6 @@ export const DEFAULT_FILTERS: FilterState = {
   category: null,
   subcategory: null,
   tags: [],
-  status: 'all',
   sort: 'name-asc',
   query: '',
 }

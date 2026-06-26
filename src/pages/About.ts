@@ -21,7 +21,7 @@ export function AboutPage(sites: Site[], categories: Category[]): HTMLElement {
     },
     {
       title: 'How are sites curated?',
-      body: `Every site is manually reviewed before listing. Criteria include: reliable uptime, active maintenance, genuine utility, and community reputation. Sites that go permanently offline or degrade significantly are removed.`,
+      body: `Every site is manually reviewed before listing. Criteria include: reliable uptime, active maintenance, genuine utility, and community reputation.`,
     },
     {
       title: 'Technical details',

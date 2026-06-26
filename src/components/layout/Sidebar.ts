@@ -63,28 +63,5 @@ export function Sidebar(
     aside.appendChild(section)
   })
 
-  const statusLabel = el('span', { class: 'sidebar-label' }, 'Status')
-  const statusSection = el('div', { class: 'sidebar-section' })
-  statusSection.appendChild(statusLabel)
-  const statuses: Array<{ key: string; label: string }> = [
-    { key: 'all', label: 'All' },
-    { key: 'online', label: 'Online' },
-    { key: 'offline', label: 'Offline' },
-  ]
-  statuses.forEach(s => {
-    const btn = el('button', {
-      class: `sidebar-item${filters.status === s.key ? ' active' : ''}`,
-    })
-    btn.innerHTML = s.key === 'all'
-      ? `<span>${s.label}</span>`
-      : `${icon('circle', 10)} <span>${s.label}</span>`
-    btn.addEventListener('click', () => {
-      onFilterChange({ ...filters, status: s.key as FilterState['status'] })
-      onClose?.()
-    })
-    statusSection.appendChild(btn)
-  })
-  aside.appendChild(statusSection)
-
   return aside
 }

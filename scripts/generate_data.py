@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""Generate Piralib data files (categories.json + sites.json) from Wotaku listings."""
 
 import json, random
 

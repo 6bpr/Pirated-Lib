@@ -1,9 +1,9 @@
 import { el } from '../utils/dom'
 import { icon, icons } from '../utils/icons'
 import { SiteCard } from '../components/site/SiteCard'
-import { StatCard } from '../components/stats/StatCard'
 import { pluralize } from '../utils/format'
 import { navigate, basePath } from '../utils/router'
+import { AnimeClickMe } from '../components/ui/AnimeClickMe'
 import type { Site, Category } from '../types'
 
 export function HomePage(sites: Site[], categories: Category[], favIds: string[], recentIds?: Set<string>): HTMLElement {
@@ -18,6 +18,10 @@ export function HomePage(sites: Site[], categories: Category[], favIds: string[]
   meta.appendChild(el('span', {}, `${pluralize(categories.length, 'category')}`))
   hero.appendChild(meta)
   page.appendChild(hero)
+
+  const clickMe = el('div', { style: 'text-align:center;margin-bottom:var(--space-6);' })
+  clickMe.appendChild(AnimeClickMe())
+  page.appendChild(clickMe)
 
   const catSection = el('div', { class: 'home-categories animate-fade-in-up' })
   const catTitle = el('h2', { class: 'section-title', style: 'margin-bottom:var(--space-3);text-align:center;' })
@@ -73,12 +77,7 @@ export function HomePage(sites: Site[], categories: Category[], favIds: string[]
     page.appendChild(recentSection)
   }
 
-  const statsRow = el('div', { class: 'stats-grid', style: 'margin-bottom:var(--space-6)' })
-  const onlineCount = sites.filter(s => s.status === 'online').length
-  const offlineCount = sites.filter(s => s.status === 'offline').length
-  statsRow.appendChild(StatCard(onlineCount, 'Sites Online'))
-  statsRow.appendChild(StatCard(offlineCount, 'Sites Offline'))
-  page.appendChild(statsRow)
+
 
   return page
 }

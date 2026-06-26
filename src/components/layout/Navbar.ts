@@ -49,25 +49,6 @@ export function Navbar(currentPage: PageName, theme: 'dark' | 'light', callbacks
   burgerBtn.innerHTML = `<span class="hamburger-container"><span class="hamburger-top"></span><span class="hamburger-middle"></span><span class="hamburger-bottom"></span></span>`
 
   const dropdown = el('div', { class: 'navbar-dropdown' })
-  const statusItems: Array<{ label: string; status: string; icon: string }> = [
-    { label: 'Online', status: 'online', icon: icon('circle', 12) },
-    { label: 'Offline', status: 'offline', icon: icon('circle', 12) },
-  ]
-  statusItems.forEach(s => {
-    const a = el('a', {
-      class: 'navbar-dropdown-link',
-      href: basePath(`/browse?status=${s.status}`),
-    })
-    a.innerHTML = `<span class="icon">${s.icon}</span>${s.label}`
-    a.addEventListener('click', (e) => {
-      e.preventDefault()
-      navigate(`/browse?status=${s.status}`)
-      burgerBtn.classList.remove('active')
-      burgerBtn.setAttribute('aria-expanded', 'false')
-      dropdown.classList.remove('open')
-    })
-    dropdown.appendChild(a)
-  })
 
   burgerBtn.addEventListener('click', () => {
     const isOpen = dropdown.classList.toggle('open')

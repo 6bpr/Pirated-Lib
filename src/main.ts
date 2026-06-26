@@ -5,11 +5,10 @@ import './styles/components.css'
 import './styles/pages.css'
 import './styles/utilities.css'
 
-import type { Site, Category, AppState, PageName, SiteStatus } from './types'
+import type { Site, Category, AppState, PageName } from './types'
 import { loadState, saveTheme, saveView, saveFavorites, saveHistory, saveRecentSearches, saveSiteNotes, saveSidebarOpen, saveAccentColor, saveBlurEnabled, saveParallaxEnabled, detectSiteChanges, DEFAULT_STATE } from './utils/storage'
 import { initSearch } from './utils/search'
 import { preloadFavicons } from './utils/format'
-import { checkAllSites } from './utils/health'
 import { initRouter, registerRoute, navigate, basePath, getCurrentPage, setCurrentPage, getParams } from './utils/router'
 import { initKeyboard, onKey } from './utils/keyboard'
 import { el, render, qs } from './utils/dom'
@@ -26,7 +25,7 @@ import { FavoritesPage } from './pages/Favorites'
 import { HistoryPage } from './pages/History'
 import { DashboardPage } from './pages/Dashboard'
 import { AboutPage } from './pages/About'
-import { HealthCheckPage } from './pages/HealthCheck'
+
 
 let sites: Site[] = []
 let categories: Category[] = []
@@ -51,73 +50,32 @@ async function init() {
   if (navbarSlot) render(navbarSlot, el('div', {}))
   if (bottomNavSlot) render(bottomNavSlot, el('div', {}))
 
-  let onlineCount = 0
-  let offlineCount = 0
-  let checkedCount = 0
-  let skipped = false
-  const total = sites.length
+  recentSiteIds = detectSiteChanges(sites)
+  initSearch(sites)
+  preloadFavicons(sites.map(s => s.url))
+  initKeyboard()
 
-  const bootApp = () => {
-    if (skipped) return
-    skipped = true
-    recentSiteIds = detectSiteChanges(sites)
-    initSearch(sites)
-    preloadFavicons(sites.map(s => s.url))
-    initKeyboard()
+  document.documentElement.setAttribute('data-theme', state.theme)
+  applySettings()
 
-    document.documentElement.setAttribute('data-theme', state.theme)
-    applySettings()
+  registerRoute(/^\/$/, () => { setCurrentPage('home'); renderPage() })
+  registerRoute(/^\/browse(?:\?.*)?$/, (params) => {
+    setCurrentPage('browse')
+    if (params.category) state.filters.category = params.category
+    if (params.subcategory) state.filters.subcategory = params.subcategory
+    renderPage()
+  })
+  registerRoute(/^\/site\?id=(?<id>[^&]+)/, () => { setCurrentPage('site'); renderPage() })
+  registerRoute(/^\/favorites\/?$/, () => { setCurrentPage('favorites'); renderPage() })
+  registerRoute(/^\/history\/?$/, () => { setCurrentPage('history'); renderPage() })
+  registerRoute(/^\/dashboard\/?$/, () => { setCurrentPage('dashboard'); renderPage() })
+  registerRoute(/^\/about\/?$/, () => { setCurrentPage('about'); renderPage() })
 
-    registerRoute(/^\/$/, () => { setCurrentPage('home'); renderPage() })
-    registerRoute(/^\/browse(?:\?.*)?$/, (params) => {
-      setCurrentPage('browse')
-      if (params.category) state.filters.category = params.category
-      if (params.subcategory) state.filters.subcategory = params.subcategory
-      if (params.status) state.filters.status = params.status as SiteStatus | 'all'
-      renderPage()
-    })
-    registerRoute(/^\/site\?id=(?<id>[^&]+)/, () => { setCurrentPage('site'); renderPage() })
-    registerRoute(/^\/favorites\/?$/, () => { setCurrentPage('favorites'); renderPage() })
-    registerRoute(/^\/history\/?$/, () => { setCurrentPage('history'); renderPage() })
-    registerRoute(/^\/dashboard\/?$/, () => { setCurrentPage('dashboard'); renderPage() })
-    registerRoute(/^\/about\/?$/, () => { setCurrentPage('about'); renderPage() })
+  onKey('Ctrl+k', (e) => { e.preventDefault(); openSearch() })
+  onKey('Escape', () => { closeSearchIfOpen() })
 
-    onKey('Ctrl+k', (e) => { e.preventDefault(); openSearch() })
-    onKey('Escape', () => { closeSearchIfOpen() })
-
-    initRouter()
-    navigate('/')
-  }
-
-  const renderHC = () => {
-    const hc = HealthCheckPage(onlineCount, offlineCount, checkedCount, total, bootApp)
-    render(root, hc)
-  }
-
-  sites.forEach(s => s.status = 'online')
-  renderHC()
-
-  checkAllSites(
-    sites.map(s => s.url),
-    (checked, _total, result) => {
-      if (skipped) return
-      const site = sites.find(s => s.url === result.url)
-      if (site) {
-        site.status = result.status
-        if (result.status === 'online') onlineCount++
-        else offlineCount++
-      }
-      checkedCount = checked
-      if (checkedCount % 8 === 0 || checkedCount === total) {
-        renderHC()
-      }
-    },
-    (_results) => {
-      if (skipped) return
-      renderHC()
-      setTimeout(bootApp, 800)
-    },
-  )
+  initRouter()
+  navigate('/')
 }
 
 let searchOverlay: HTMLElement | null = null

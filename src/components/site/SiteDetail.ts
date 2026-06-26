@@ -78,7 +78,6 @@ export function SiteDetail(
   const meta = el('div', { class: 'site-detail-meta' })
   const metaFields: Array<{ label: string; value: string }> = [
     { label: 'Category', value: `${catName} / ${subName}` },
-    { label: 'Status', value: site.status },
     { label: 'Added', value: relativeTime(site.addedAt) },
     { label: 'Updated', value: relativeTime(site.updatedAt) },
     { label: 'Language', value: site.language },

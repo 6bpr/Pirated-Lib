@@ -28,8 +28,6 @@ LIBS.forEach(lib => {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '');
 
-      const statusMap = { g: 'online', y: 'offline', r: 'offline' };
-
       const existingIdx = sites.findIndex(s => s.id === id);
       if (existingIdx !== -1) {
         return;
@@ -44,8 +42,6 @@ LIBS.forEach(lib => {
         category: catId,
         subcategory: subId,
         tags: site.t || [],
-        featured: false,
-        status: statusMap[site.s] || 'unknown',
         language: 'en',
         requires: 'none',
         curatorNote: site.note || '',
