@@ -1,70 +1,71 @@
 import type { SiteStatus } from '../types'
-import { DEFAULT_STATE, loadState, saveHealthCache } from './storage'
 
-const HEALTH_TTL = 30 * 60 * 1000
-const CONCURRENCY = 6
 
-async function probe(url: string, { timeoutMs = 4000, maxRetries = 2 } = {}): Promise<SiteStatus> {
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    if (attempt > 0) await new Promise(r => setTimeout(r, 800 * attempt))
-    const controller = new AbortController()
-    const tid = setTimeout(() => controller.abort(), timeoutMs)
-    try {
-      const res = await fetch(url, {
-        method: 'HEAD',
-        mode: 'cors',
-        signal: controller.signal,
-        cache: 'no-store',
-        redirect: 'follow',
-      })
-      if (res.status >= 200 && res.status < 400) return 'online'
+
+const CONCURRENCY = 20
+const PROBE_TIMEOUT = 10000
+const MAX_RETRIES = 1
+
+async function probe(url: string): Promise<SiteStatus> {
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    if (attempt > 0) await new Promise(r => setTimeout(r, 1000))
+
+    const methods: RequestInit['method'][] = ['HEAD', 'GET']
+    for (const method of methods) {
+      const c = new AbortController()
+      const t = setTimeout(() => c.abort(), PROBE_TIMEOUT)
       try {
-        await fetch(url, { method: 'HEAD', mode: 'no-cors', signal: controller.signal, cache: 'no-store', redirect: 'follow' })
+        await fetch(url, {
+          method,
+          mode: 'no-cors',
+          signal: c.signal,
+          cache: 'no-store',
+          redirect: 'follow',
+        })
+        clearTimeout(t)
         return 'online'
-      } catch {}
-    } catch {
-      try {
-        await fetch(url, { method: 'HEAD', mode: 'no-cors', signal: controller.signal, cache: 'no-store', redirect: 'follow' })
-        return 'online'
-      } catch {}
-    } finally {
-      clearTimeout(tid)
+      } catch {
+        clearTimeout(t)
+      }
     }
   }
-  return 'down'
+  return 'offline'
 }
 
-export function runHealth(urls: string[], onUpdate: (url: string, status: SiteStatus) => void) {
-  const cache = loadState().healthCache
-  const now = Date.now()
-  const pending: string[] = []
+export interface HealthResult {
+  url: string
+  status: SiteStatus
+}
 
-  urls.forEach(url => {
-    const cached = cache[url]
-    if (cached && now - cached.checkedAt < HEALTH_TTL) {
-      onUpdate(url, cached.status)
-    } else {
-      pending.push(url)
-    }
-  })
-
-  if (pending.length === 0) return
-
+export function checkAllSites(
+  urls: string[],
+  onProgress: (checked: number, total: number, result: HealthResult) => void,
+  onComplete: (results: HealthResult[]) => void,
+): void {
+  const total = urls.length
+  const results: HealthResult[] = []
+  let checked = 0
   let idx = 0
+
   function runNext(): Promise<void> {
-    if (idx >= pending.length) return Promise.resolve()
-    const url = pending[idx++]
-    return probe(url).then(result => {
-      cache[url] = { status: result, checkedAt: Date.now() }
-      onUpdate(url, result)
+    if (idx >= total) return Promise.resolve()
+    const url = urls[idx++]
+    return probe(url).then(status => {
+      const r: HealthResult = { url, status }
+      results.push(r)
+      checked++
+      onProgress(checked, total, r)
+      if (checked % 10 === 0) {
+        return new Promise(r => setTimeout(r, 0))
+      }
     }).catch(() => {
-      cache[url] = { status: 'down', checkedAt: Date.now() }
-      onUpdate(url, 'down')
+      const r: HealthResult = { url, status: 'offline' }
+      results.push(r)
+      checked++
+      onProgress(checked, total, r)
     }).then(runNext)
   }
 
-  const workers = Array.from({ length: Math.min(CONCURRENCY, pending.length) }, () => runNext())
-  Promise.allSettled(workers).then(() => {
-    saveHealthCache(cache)
-  })
+  const workers = Array.from({ length: Math.min(CONCURRENCY, total) }, () => runNext())
+  Promise.allSettled(workers).then(() => onComplete(results))
 }

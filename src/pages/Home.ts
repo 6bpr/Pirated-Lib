@@ -6,7 +6,7 @@ import { pluralize } from '../utils/format'
 import { navigate, basePath } from '../utils/router'
 import type { Site, Category } from '../types'
 
-export function HomePage(sites: Site[], categories: Category[], favIds: string[]): HTMLElement {
+export function HomePage(sites: Site[], categories: Category[], favIds: string[], recentIds?: Set<string>): HTMLElement {
   const page = el('div', {})
 
   const hero = el('div', { class: 'hero-minimal animate-fade-in' })
@@ -55,7 +55,13 @@ export function HomePage(sites: Site[], categories: Category[], favIds: string[]
   catSection.appendChild(catGrid)
   page.appendChild(catSection)
 
-  const recent = [...sites].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 6)
+  const sorted = [...sites].sort((a, b) => {
+    const aChanged = recentIds?.has(a.id) ?? false
+    const bChanged = recentIds?.has(b.id) ?? false
+    if (aChanged !== bChanged) return aChanged ? -1 : 1
+    return b.updatedAt.localeCompare(a.updatedAt)
+  })
+  const recent = sorted.slice(0, 6)
   if (recent.length > 0) {
     const recentSection = el('div', { class: 'home-recent animate-fade-in-up' })
     const recentTitle = el('h2', { class: 'section-title', style: 'margin-bottom:var(--space-3);' })
@@ -69,11 +75,9 @@ export function HomePage(sites: Site[], categories: Category[], favIds: string[]
 
   const statsRow = el('div', { class: 'stats-grid', style: 'margin-bottom:var(--space-6)' })
   const onlineCount = sites.filter(s => s.status === 'online').length
-  const partialCount = sites.filter(s => s.status === 'partial').length
-  const downCount = sites.filter(s => s.status === 'down').length
+  const offlineCount = sites.filter(s => s.status === 'offline').length
   statsRow.appendChild(StatCard(onlineCount, 'Sites Online'))
-  statsRow.appendChild(StatCard(partialCount, 'Sites Partial'))
-  statsRow.appendChild(StatCard(downCount, 'Sites Down'))
+  statsRow.appendChild(StatCard(offlineCount, 'Sites Offline'))
   page.appendChild(statsRow)
 
   return page

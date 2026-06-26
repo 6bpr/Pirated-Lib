@@ -5,10 +5,11 @@ import './styles/components.css'
 import './styles/pages.css'
 import './styles/utilities.css'
 
-import type { Site, Category, AppState, PageName } from './types'
-import { loadState, saveTheme, saveView, saveFavorites, saveHistory, saveRecentSearches, saveSiteNotes, saveSidebarOpen, saveAccentColor, saveBlurEnabled, saveParallaxEnabled, DEFAULT_STATE } from './utils/storage'
+import type { Site, Category, AppState, PageName, SiteStatus } from './types'
+import { loadState, saveTheme, saveView, saveFavorites, saveHistory, saveRecentSearches, saveSiteNotes, saveSidebarOpen, saveAccentColor, saveBlurEnabled, saveParallaxEnabled, detectSiteChanges, DEFAULT_STATE } from './utils/storage'
 import { initSearch } from './utils/search'
 import { preloadFavicons } from './utils/format'
+import { checkAllSites } from './utils/health'
 import { initRouter, registerRoute, navigate, basePath, getCurrentPage, setCurrentPage, getParams } from './utils/router'
 import { initKeyboard, onKey } from './utils/keyboard'
 import { el, render, qs } from './utils/dom'
@@ -25,10 +26,12 @@ import { FavoritesPage } from './pages/Favorites'
 import { HistoryPage } from './pages/History'
 import { DashboardPage } from './pages/Dashboard'
 import { AboutPage } from './pages/About'
+import { HealthCheckPage } from './pages/HealthCheck'
 
 let sites: Site[] = []
 let categories: Category[] = []
 let state: AppState
+let recentSiteIds: Set<string> | undefined
 
 async function init() {
   state = loadState()
@@ -40,30 +43,81 @@ async function init() {
   sites = sitesData as Site[]
   categories = catsData as Category[]
 
-  initSearch(sites)
-  preloadFavicons(sites.map(s => s.url))
-  initKeyboard()
+  const root = document.querySelector('#app-slot') as HTMLElement
+  if (!root) return
 
-  document.documentElement.setAttribute('data-theme', state.theme)
-  applySettings()
+  const navbarSlot = document.querySelector('#navbar-slot') as HTMLElement | null
+  const bottomNavSlot = document.querySelector('#bottomnav-slot') as HTMLElement | null
+  if (navbarSlot) render(navbarSlot, el('div', {}))
+  if (bottomNavSlot) render(bottomNavSlot, el('div', {}))
 
-  registerRoute(/^\/$/, () => { setCurrentPage('home'); renderPage() })
-  registerRoute(/^\/browse(?:\?.*)?$/, (params) => {
-    setCurrentPage('browse')
-    if (params.category) state.filters.category = params.category
-    if (params.subcategory) state.filters.subcategory = params.subcategory
-    renderPage()
-  })
-  registerRoute(/^\/site\?id=(?<id>[^&]+)/, () => { setCurrentPage('site'); renderPage() })
-  registerRoute(/^\/favorites\/?$/, () => { setCurrentPage('favorites'); renderPage() })
-  registerRoute(/^\/history\/?$/, () => { setCurrentPage('history'); renderPage() })
-  registerRoute(/^\/dashboard\/?$/, () => { setCurrentPage('dashboard'); renderPage() })
-  registerRoute(/^\/about\/?$/, () => { setCurrentPage('about'); renderPage() })
+  let onlineCount = 0
+  let offlineCount = 0
+  let checkedCount = 0
+  let skipped = false
+  const total = sites.length
 
-  onKey('Ctrl+k', (e) => { e.preventDefault(); openSearch() })
-  onKey('Escape', () => { closeSearchIfOpen() })
+  const bootApp = () => {
+    if (skipped) return
+    skipped = true
+    recentSiteIds = detectSiteChanges(sites)
+    initSearch(sites)
+    preloadFavicons(sites.map(s => s.url))
+    initKeyboard()
 
-  initRouter()
+    document.documentElement.setAttribute('data-theme', state.theme)
+    applySettings()
+
+    registerRoute(/^\/$/, () => { setCurrentPage('home'); renderPage() })
+    registerRoute(/^\/browse(?:\?.*)?$/, (params) => {
+      setCurrentPage('browse')
+      if (params.category) state.filters.category = params.category
+      if (params.subcategory) state.filters.subcategory = params.subcategory
+      if (params.status) state.filters.status = params.status as SiteStatus | 'all'
+      renderPage()
+    })
+    registerRoute(/^\/site\?id=(?<id>[^&]+)/, () => { setCurrentPage('site'); renderPage() })
+    registerRoute(/^\/favorites\/?$/, () => { setCurrentPage('favorites'); renderPage() })
+    registerRoute(/^\/history\/?$/, () => { setCurrentPage('history'); renderPage() })
+    registerRoute(/^\/dashboard\/?$/, () => { setCurrentPage('dashboard'); renderPage() })
+    registerRoute(/^\/about\/?$/, () => { setCurrentPage('about'); renderPage() })
+
+    onKey('Ctrl+k', (e) => { e.preventDefault(); openSearch() })
+    onKey('Escape', () => { closeSearchIfOpen() })
+
+    initRouter()
+    navigate('/')
+  }
+
+  const renderHC = () => {
+    const hc = HealthCheckPage(onlineCount, offlineCount, checkedCount, total, bootApp)
+    render(root, hc)
+  }
+
+  sites.forEach(s => s.status = 'online')
+  renderHC()
+
+  checkAllSites(
+    sites.map(s => s.url),
+    (checked, _total, result) => {
+      if (skipped) return
+      const site = sites.find(s => s.url === result.url)
+      if (site) {
+        site.status = result.status
+        if (result.status === 'online') onlineCount++
+        else offlineCount++
+      }
+      checkedCount = checked
+      if (checkedCount % 8 === 0 || checkedCount === total) {
+        renderHC()
+      }
+    },
+    (_results) => {
+      if (skipped) return
+      renderHC()
+      setTimeout(bootApp, 800)
+    },
+  )
 }
 
 let searchOverlay: HTMLElement | null = null
@@ -248,7 +302,7 @@ function renderPage() {
   switch (page) {
     case 'home':
       state.filters = { ...DEFAULT_STATE.filters }
-      content = HomePage(sites, categories, state.favorites)
+      content = HomePage(sites, categories, state.favorites, recentSiteIds)
       showSidebar = false
       break
 
@@ -296,7 +350,7 @@ function renderPage() {
       break
 
     case 'dashboard':
-      content = DashboardPage(sites, categories)
+      content = DashboardPage(sites, categories, recentSiteIds)
       showSidebar = false
       break
 

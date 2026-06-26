@@ -1,4 +1,4 @@
-import type { AppState, FilterState, HistoryEntry, HealthEntry, SortOption, SiteStatus } from '../types'
+import type { AppState, FilterState, HistoryEntry, SortOption, SiteStatus, Site } from '../types'
 
 const PREFIX = 'piralib-'
 
@@ -34,7 +34,6 @@ export const DEFAULT_STATE: AppState = {
   history: [],
   recentSearches: [],
   siteNotes: {},
-  healthCache: {},
   sidebarOpen: true,
   accentColor: 'amber',
   blurEnabled: true,
@@ -50,7 +49,6 @@ export function loadState(): AppState {
     history: get<HistoryEntry[]>('history', []),
     recentSearches: get<string[]>('recent-searches', []),
     siteNotes: get<Record<string, string>>('site-notes', {}),
-    healthCache: get<Record<string, HealthEntry>>('health-cache', {}),
     sidebarOpen: get<boolean>('sidebar-open', true),
     accentColor: get<string>('accent-color', 'amber'),
     blurEnabled: get<boolean>('blur-enabled', true),
@@ -82,10 +80,6 @@ export function saveSiteNotes(notes: Record<string, string>) {
   set('site-notes', notes)
 }
 
-export function saveHealthCache(cache: Record<string, HealthEntry>) {
-  set('health-cache', cache)
-}
-
 export function saveSidebarOpen(open: boolean) {
   set('sidebar-open', open)
 }
@@ -100,4 +94,34 @@ export function saveBlurEnabled(enabled: boolean) {
 
 export function saveParallaxEnabled(enabled: boolean) {
   set('parallax-enabled', enabled)
+}
+
+function siteFingerprint(s: Site): string {
+  let hash = 0
+  const str = s.id + '|' + s.name + '|' + s.url + '|' + s.tags.join(',') + '|' + s.category + '|' + s.subcategory
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i)
+    hash = ((hash << 5) - hash) + ch
+    hash |= 0
+  }
+  return hash.toString(36)
+}
+
+export function detectSiteChanges(sites: Site[]): Set<string> {
+  const prev = get<Record<string, string>>('site-fingerprints', {})
+  const curr: Record<string, string> = {}
+  const changed = new Set<string>()
+
+  for (const s of sites) {
+    const fp = siteFingerprint(s)
+    curr[s.id] = fp
+    if (prev[s.id] === undefined) {
+      changed.add(s.id)
+    } else if (prev[s.id] !== fp) {
+      changed.add(s.id)
+    }
+  }
+
+  set('site-fingerprints', curr)
+  return changed
 }

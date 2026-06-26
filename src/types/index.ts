@@ -15,7 +15,7 @@ export interface Site {
   updatedAt: string
 }
 
-export type SiteStatus = 'online' | 'partial' | 'down' | 'unknown'
+export type SiteStatus = 'online' | 'offline'
 
 export interface Category {
   id: string
@@ -38,7 +38,6 @@ export interface AppState {
   history: HistoryEntry[]
   recentSearches: string[]
   siteNotes: Record<string, string>
-  healthCache: Record<string, HealthEntry>
   sidebarOpen: boolean
   accentColor: string
   blurEnabled: boolean
@@ -60,11 +59,6 @@ export interface HistoryEntry {
   siteId: string
   visitedAt: number
   count: number
-}
-
-export interface HealthEntry {
-  status: SiteStatus
-  checkedAt: number
 }
 
 export type PageName = 'home' | 'browse' | 'site' | 'favorites' | 'history' | 'dashboard' | 'about'

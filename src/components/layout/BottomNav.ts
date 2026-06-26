@@ -1,5 +1,5 @@
 import { el } from '../../utils/dom'
-import { navigate } from '../../utils/router'
+import { navigate, basePath } from '../../utils/router'
 import { icon } from '../../utils/icons'
 import type { PageName } from '../../types'
 
@@ -17,7 +17,7 @@ export function BottomNav(currentPage: PageName): HTMLElement {
   items.forEach(item => {
     const a = el('a', {
       class: `bottom-nav-link${currentPage === item.id ? ' active' : ''}`,
-      href: item.path,
+      href: basePath(item.path),
     })
     a.innerHTML = `<span class="icon">${item.icon}</span>${item.label}`
     a.addEventListener('click', (e) => { e.preventDefault(); navigate(item.path) })

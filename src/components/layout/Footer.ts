@@ -9,9 +9,6 @@ export function Footer(siteCount: number): HTMLElement {
   ]
   linkData.forEach(l => {
     const a = el('a', { href: l.href, target: '_blank', rel: 'noopener' }, l.label)
-    a.addEventListener('click', (e) => {
-      if (l.href.startsWith('/')) { e.preventDefault(); window.history.pushState(null, '', l.href) }
-    })
     links.appendChild(a)
   })
   footer.appendChild(left)

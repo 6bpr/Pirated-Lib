@@ -22,27 +22,46 @@ export function Navbar(currentPage: PageName, theme: 'dark' | 'light', callbacks
   logo.addEventListener('click', () => navigate('/'))
   nav.appendChild(logo)
 
-  const navMenu = el('div', { class: 'navbar-menu hide-mobile' })
-
-  const burgerBtn = el('button', { class: 'navbar-hamburger', 'aria-label': 'Navigation menu', 'aria-expanded': 'false' })
-  burgerBtn.innerHTML = `<span class="hamburger-container"><span class="hamburger-top"></span><span class="hamburger-middle"></span><span class="hamburger-bottom"></span></span>`
-
-  const dropdown = el('div', { class: 'navbar-dropdown' })
-  const pages: Array<{ id: PageName; label: string; icon: string; path: string }> = [
+  const links = el('div', { class: 'navbar-links' })
+  const navPages: Array<{ id: PageName; label: string; icon: string; path: string }> = [
     { id: 'home', label: 'Home', icon: icon('home'), path: '/' },
     { id: 'browse', label: 'Browse', icon: icon('search'), path: '/browse' },
     { id: 'dashboard', label: 'Dashboard', icon: icon('barChart3'), path: '/dashboard' },
     { id: 'about', label: 'About', icon: icon('info'), path: '/about' },
   ]
-  pages.forEach(p => {
+  navPages.forEach(p => {
     const a = el('a', {
-      class: `navbar-dropdown-link${currentPage === p.id ? ' active' : ''}`,
-      href: p.path,
+      class: `navbar-link${currentPage === p.id ? ' active' : ''}`,
+      href: basePath(p.path),
     })
-    a.innerHTML = `<span class="icon">${p.icon}</span>${p.label}`
+    a.innerHTML = `<span class="icon">${p.icon}</span> ${p.label}`
     a.addEventListener('click', (e) => {
       e.preventDefault()
       navigate(p.path)
+    })
+    links.appendChild(a)
+  })
+  nav.appendChild(links)
+
+  const navMenu = el('div', { class: 'navbar-menu hide-desktop' })
+
+  const burgerBtn = el('button', { class: 'navbar-hamburger', 'aria-label': 'Navigation menu', 'aria-expanded': 'false' })
+  burgerBtn.innerHTML = `<span class="hamburger-container"><span class="hamburger-top"></span><span class="hamburger-middle"></span><span class="hamburger-bottom"></span></span>`
+
+  const dropdown = el('div', { class: 'navbar-dropdown' })
+  const statusItems: Array<{ label: string; status: string; icon: string }> = [
+    { label: 'Online', status: 'online', icon: icon('circle', 12) },
+    { label: 'Offline', status: 'offline', icon: icon('circle', 12) },
+  ]
+  statusItems.forEach(s => {
+    const a = el('a', {
+      class: 'navbar-dropdown-link',
+      href: basePath(`/browse?status=${s.status}`),
+    })
+    a.innerHTML = `<span class="icon">${s.icon}</span>${s.label}`
+    a.addEventListener('click', (e) => {
+      e.preventDefault()
+      navigate(`/browse?status=${s.status}`)
       burgerBtn.classList.remove('active')
       burgerBtn.setAttribute('aria-expanded', 'false')
       dropdown.classList.remove('open')

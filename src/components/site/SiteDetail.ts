@@ -1,5 +1,6 @@
 import { el } from '../../utils/dom'
 import { icon } from '../../utils/icons'
+import { navigate } from '../../utils/router'
 import { Tag } from '../ui/Tag'
 import { Breadcrumbs } from '../ui/Breadcrumbs'
 import { relativeTime, cleanUrl, faviconUrl } from '../../utils/format'
@@ -108,7 +109,7 @@ export function SiteDetail(
   container.appendChild(notesSection)
 
   container.appendChild(el('div', { style: 'margin-top:var(--space-4)' },
-    (() => { const a = el('a', { href: '/browse', class: 'section-link' }); a.innerHTML = `${icon('arrowLeft')} Back to Browse`; return a })()))
+    (() => { const a = el('a', { href: '#', class: 'section-link' }); a.innerHTML = `${icon('arrowLeft')} Back to Browse`; a.addEventListener('click', (e) => { e.preventDefault(); navigate('/browse') }); return a })()))
 
   return container
 }

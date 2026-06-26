@@ -6,7 +6,7 @@ import { Breadcrumbs } from '../components/ui/Breadcrumbs'
 import { pluralize, relativeTime } from '../utils/format'
 import type { Site, Category } from '../types'
 
-export function DashboardPage(sites: Site[], categories: Category[]): HTMLElement {
+export function DashboardPage(sites: Site[], categories: Category[], recentIds?: Set<string>): HTMLElement {
   const page = el('div', {})
 
   page.appendChild(Breadcrumbs([
@@ -19,8 +19,7 @@ export function DashboardPage(sites: Site[], categories: Category[]): HTMLElemen
   page.appendChild(pageTitle)
 
   const online = sites.filter(s => s.status === 'online').length
-  const partial = sites.filter(s => s.status === 'partial').length
-  const down = sites.filter(s => s.status === 'down').length
+  const offline = sites.filter(s => s.status === 'offline').length
   const uniqueTags = new Set(sites.flatMap(s => s.tags)).size
   const totalPct = sites.length > 0 ? Math.round((online / sites.length) * 100) : 0
 
@@ -34,11 +33,10 @@ export function DashboardPage(sites: Site[], categories: Category[]): HTMLElemen
   const healthSection = el('div', { class: 'dashboard-section' })
   healthSection.appendChild(el('h2', { class: 'dashboard-section-title' }, 'Health Overview'))
   const healthChart = el('div', { class: 'bar-chart' })
-  const maxHealth = Math.max(online, partial, down, 1)
+  const maxHealth = Math.max(online, offline, 1)
   const healthData = [
     { label: 'Online', count: online, color: 'var(--success)' },
-    { label: 'Partial', count: partial, color: 'var(--warning)' },
-    { label: 'Down', count: down, color: 'var(--danger)' },
+    { label: 'Offline', count: offline, color: 'var(--danger)' },
   ]
   healthData.forEach(d => {
     const row = el('div', { class: 'bar-row' })
@@ -80,7 +78,12 @@ export function DashboardPage(sites: Site[], categories: Category[]): HTMLElemen
 
   const recentSection = el('div', { class: 'dashboard-section' })
   recentSection.appendChild(el('h2', { class: 'dashboard-section-title' }, 'Recently Updated'))
-  const recent = [...sites].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 5)
+  const recent = [...sites].sort((a, b) => {
+    const aChanged = recentIds?.has(a.id) ?? false
+    const bChanged = recentIds?.has(b.id) ?? false
+    if (aChanged !== bChanged) return aChanged ? -1 : 1
+    return b.updatedAt.localeCompare(a.updatedAt)
+  }).slice(0, 5)
   const recentList = el('div', { style: 'display:flex;flex-direction:column;gap:var(--space-2);' })
   recent.forEach(s => {
     recentList.appendChild(el('div', { style: 'font-size:var(--text-sm);display:flex;justify-content:space-between;gap:var(--space-2);flex-wrap:wrap;' },

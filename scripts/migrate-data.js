@@ -28,7 +28,7 @@ LIBS.forEach(lib => {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '');
 
-      const statusMap = { g: 'online', y: 'partial', r: 'down' };
+      const statusMap = { g: 'online', y: 'offline', r: 'offline' };
 
       const existingIdx = sites.findIndex(s => s.id === id);
       if (existingIdx !== -1) {

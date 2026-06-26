@@ -73,6 +73,6 @@ export function FilterBar(
 }
 
 function statusLabel(s: SiteStatus | 'all'): string {
-  const map: Record<string, string> = { all: 'All', online: 'Online', partial: 'Partial', down: 'Down' }
+  const map: Record<string, string> = { all: 'All', online: 'Online', offline: 'Offline' }
   return map[s] || s
 }

@@ -69,8 +69,7 @@ export function Sidebar(
   const statuses: Array<{ key: string; label: string }> = [
     { key: 'all', label: 'All' },
     { key: 'online', label: 'Online' },
-    { key: 'partial', label: 'Partial' },
-    { key: 'down', label: 'Down' },
+    { key: 'offline', label: 'Offline' },
   ]
   statuses.forEach(s => {
     const btn = el('button', {

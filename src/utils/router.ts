@@ -69,6 +69,13 @@ export function getParams(): Record<string, string> {
 }
 
 export function initRouter() {
+  const redirect = sessionStorage.getItem('redirect')
+  if (redirect) {
+    sessionStorage.removeItem('redirect')
+    window.addEventListener('popstate', () => resolve())
+    navigate(redirect)
+    return
+  }
   window.addEventListener('popstate', () => resolve())
   resolve()
 }
