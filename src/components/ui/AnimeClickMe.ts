@@ -10,13 +10,13 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    img: '/anime-wiki.png',
+    img: `${import.meta.env.BASE_URL}anime-wiki.png`,
     title: 'Anime Wiki',
     github: 'https://github.com/Prawaldev/anime-wiki',
     website: 'https://Prawaldev.github.io/anime-wiki',
   },
   {
-    img: '/portfolio.png',
+    img: `${import.meta.env.BASE_URL}portfolio.png`,
     title: 'Portfolio',
     github: 'https://github.com/Prawaldev/Portfolio',
     website: 'https://Prawaldev.github.io/Portfolio/',
